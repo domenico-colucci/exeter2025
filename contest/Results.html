@@ -3,8 +3,16 @@ Results
 {{ endblock }}
 
 {{ block content }}
-You bought {{ player.tickets_purchased }} tickets 
-    {{ next_button }}
+You bought {{ player.tickets_purchased }} tickets. Other guys purchased:
+{{for p in player.coplayers}}
+
+{{p.tickets_purchased}} tickets.
+ {{endfor}}   
+You won {{ player.prize_won }}.
+ Your earnings are {{ player.earnings }}.
+
+
+{{ next_button }}
 {{ endblock }}
 
 
