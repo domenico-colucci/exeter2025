@@ -50,7 +50,7 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     endowment = models.CurrencyField()
     cost_per_ticket = models.CurrencyField()
-    tickets_purchased = models.IntegerField()
+    tickets_purchased = models.IntegerField() # simplest way to enforce budget constraint
     prize_won = models.FloatField()
     earnings= models.CurrencyField()
     
@@ -63,6 +63,11 @@ class Player(BasePlayer):
     def coplayers(self):
         """Returns the other player in the group."""
         return self.get_others_in_group()
+    
+    @property
+    def max_tickets(self):
+        """Returns the maximum number of tickets a player can purchase."""
+        return int(self.endowment / self.cost_per_ticket)
 
 # def creating_session(subsession):
 #     subsession.setup_round()
@@ -89,6 +94,16 @@ class Intro(Page):
 class Decision(Page):
     form_model = 'player'
     form_fields = ['tickets_purchased']
+
+    #staticmethod
+    def error_message(player, values):
+        if values['tickets_purchased'] < 0:
+            return 'You cannot purchase a negative number of tickets.'
+        if values['tickets_purchased'] > player.max_tickets:
+            return (
+            f"Purchasing {values['tickets_purchased']} would "
+            f"cost more than your endowment of {player.endowment}."
+            )
 
 class Results(Page):
     @staticmethod
