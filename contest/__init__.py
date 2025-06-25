@@ -20,7 +20,8 @@ class Subsession(BaseSubsession):
     is_paid = models.BooleanField()
     csf = models.StringField(choices=['share', 'allpay'])
     def setup_round(self):
-        self.is_paid=True
+        self.is_paid = self.round_number % 2
+        self.csf = self.session.config['csf']
         for group in self.get_groups():
             group.setup_round()
 
@@ -33,7 +34,7 @@ class Group(BaseGroup):
     def setup_round(self):
         self.prize = C.PRIZE
         self.subsession.csf = 'allpay'
-        self.subsession.is_paid = self.round_number % 2
+        
         for player in self.get_players():
             player.setup_round()
 
@@ -76,7 +77,7 @@ class Player(BasePlayer):
     earnings= models.CurrencyField()
     
     def setup_round(self):
-        self.endowment = C.ENDOWMENT
+        self.endowment = self.session.config.get('contest_endowment',C.ENDOWMENT) # default to C.ENDOWMENT if not set in session config
         self.cost_per_ticket = C.COST_PER_TICKET
       #  self.tickets_purchased = 0
     
