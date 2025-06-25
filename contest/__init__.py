@@ -9,7 +9,7 @@ Your app description
 class C(BaseConstants):
     NAME_IN_URL = 'contest'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 1
+    NUM_ROUNDS = 2
     ENDOWMENT = Currency(10)
     COST_PER_TICKET = Currency(0.5)
     PRIZE = Currency(8)
@@ -32,6 +32,7 @@ class Group(BaseGroup):
     prize = models.CurrencyField()
     def setup_round(self):
         self.prize = C.PRIZE
+        self.subsession.is_paid = self.round_number % 2
         for player in self.get_players():
             player.setup_round()
 
@@ -44,7 +45,10 @@ class Group(BaseGroup):
             except ZeroDivisionError:
                 player.prize_won = 0.0
             player.earnings = player.endowment - (player.tickets_purchased * player.cost_per_ticket) + (player.prize_won * self.prize)
-            #print(player.earnings)
+            if self.subsession.is_paid:
+                player.payoff = player.earnings
+            
+
 
 
 class Player(BasePlayer):
