@@ -3,7 +3,11 @@ Outcome
 {{ endblock }}
 {{ block content }}
 
-    {{ formfields }}
+{{ for rd in player.in_paid_rounds() }}
+Round {{rd.round_number}} <p>
+Earnings: {{player.earnings}}
+</p>
+    {{endfor}}
     {{ next_button }}
 
 {{ endblock }}

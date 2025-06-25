@@ -34,6 +34,15 @@ SESSION_CONFIGS = [
         num_demo_participants=2,
     ),
     dict(
+        name="contest_lottery",
+        csf='lottery',
+        contest_endowment=9,
+        app_sequence=[
+            "contest"
+        ],
+        num_demo_participants=2,
+    ),
+    dict(
         name="encrypt_demo",
 
         app_sequence=[

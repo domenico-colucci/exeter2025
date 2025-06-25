@@ -1,5 +1,5 @@
 from otree.api import *
-
+import random
 
 doc = """
 Your app description
@@ -13,17 +13,26 @@ class C(BaseConstants):
     ENDOWMENT = Currency(10)
     COST_PER_TICKET = Currency(0.5)
     PRIZE = Currency(8)
-
+    NUM_PAID_ROUNDS = 1
 
 
 class Subsession(BaseSubsession):
-    is_paid = models.BooleanField()
-    csf = models.StringField(choices=['share', 'allpay'])
+    is_paid = models.BooleanField(initial=False)
+    csf = models.StringField(choices=['share', 'allpay', 'lottery'])
+    
     def setup_round(self):
+        if self.round_number==1:
+            self.setup_paid_rounds()
         self.is_paid = self.round_number % 2
         self.csf = self.session.config['csf']
         for group in self.get_groups():
             group.setup_round()
+
+    def setup_paid_rounds(self):
+        chosen_rounds = random.sample(self.in_rounds(1, C.NUM_ROUNDS), k=C.NUM_PAID_ROUNDS)
+        for rd in chosen_rounds:
+            rd.is_paid = True 
+
 
     def compute_outcome(self):
         for group in self.get_groups():
@@ -57,15 +66,26 @@ class Group(BaseGroup):
             else:
                 player.prize_won = 0.0
 
+    def compute_outcome_lottery(self):
+        try:
+            winner = random.choices(self.get_players(),k=1,weights=[p.tickets_purchased for p in self.get_players()])[0]
+        except ValueError:
+            winner = random.choice(self.get_players())
+        for player in self.get_players():
+            player.prize_won=1 * player==winner
+
     def compute_outcome(self):
-        self.player.earnings = player.endowment - (player.tickets_purchased * player.cost_per_ticket) + (player.prize_won * self.prize)
-        if self.subsession.is_paid:
-            self.player.payoff = player.earnings
         if self.subsession.csf == 'share':
             self.compute_outcome_share()
         elif self.subsession.csf == 'allpay':
             self.compute_outcome_allpay()
-
+        elif self.subsession.csf == 'lottery':
+            self.compute_outcome_lottery()
+        
+        for player in self.get_players():
+            player.earnings = player.endowment - (player.tickets_purchased * player.cost_per_ticket) + (player.prize_won * self.prize)
+            if self.subsession.is_paid:
+                player.payoff = player.earnings
 
 
 
@@ -90,6 +110,9 @@ class Player(BasePlayer):
     def max_tickets(self):
         """Returns the maximum number of tickets a player can purchase."""
         return int(self.endowment / self.cost_per_ticket)
+    
+    def in_paid_rounds(self):
+        return [rd for rd in self.in_all_rounds() if rd.subsession.is_paid]
 
 # def creating_session(subsession):
 #     subsession.setup_round()
@@ -110,7 +133,9 @@ class DecisionWaitPage(WaitPage):
 
 
 class Intro(Page):
-    pass
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number==1
 
 
 class Decision(Page):
@@ -135,7 +160,10 @@ class Results(Page):
             }
 
 class EndBlock(Page):
-    pass
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number==C.NUM_ROUNDS
+
 
 page_sequence = [SetupRound,
                 Intro, 
