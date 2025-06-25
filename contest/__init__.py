@@ -23,8 +23,10 @@ class Subsession(BaseSubsession):
     def setup_round(self):
         if self.round_number==1:
             self.setup_paid_rounds()
-        self.is_paid = self.round_number % 2
+        #self.is_paid = self.round_number % 2
         self.csf = self.session.config['csf']
+        if self.session.config.get('random_groups', False):
+            self.group_randomly() #to reshuffle groups at every round
         for group in self.get_groups():
             group.setup_round()
 
@@ -42,7 +44,7 @@ class Group(BaseGroup):
     prize = models.CurrencyField()
     def setup_round(self):
         self.prize = C.PRIZE
-        self.subsession.csf = 'allpay'
+        #self.subsession.csf = 'allpay'
         
         for player in self.get_players():
             player.setup_round()

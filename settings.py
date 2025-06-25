@@ -18,6 +18,7 @@ SESSION_CONFIGS = [
     dict(
         name="contest_share",
         csf='share',
+        random_groups=False,
         contest_endowment=9,
         app_sequence=[
             "contest"
@@ -28,6 +29,7 @@ SESSION_CONFIGS = [
         name="contest_allpay",
         csf='allpay',
         contest_endowment=9,
+        random_groups=False,
         app_sequence=[
             "contest"
         ],
@@ -36,6 +38,7 @@ SESSION_CONFIGS = [
     dict(
         name="contest_lottery",
         csf='lottery',
+        random_groups=False,
         contest_endowment=9,
         app_sequence=[
             "contest"
@@ -44,7 +47,6 @@ SESSION_CONFIGS = [
     ),
     dict(
         name="encrypt_demo",
-
         app_sequence=[
             "encrypt"
         ],

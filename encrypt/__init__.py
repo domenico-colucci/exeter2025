@@ -9,11 +9,17 @@ Encryption game where players must decrypt messages.
 class C(BaseConstants):
     NAME_IN_URL = 'encrypt'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 1
+    NUM_ROUNDS = 3
 
 
 class Subsession(BaseSubsession):
-    pass
+    pay_per_word = models.CurrencyField()
+    word = models.StringField()
+
+    def setup_round(self):
+        self.pay_per_word=Currency(0.10)
+        self.word="AB"
+
 
 
 class Group(BaseGroup):
@@ -26,22 +32,27 @@ class Player(BasePlayer):
 def creating_session(subsession: Subsession):
     # This function is called at the start of each session.
     # You can use it to set up initial values or perform any setup tasks.
-    pass
+    subsession.setup_round()
 
+
+    
 
 # PAGES
 class Intro(Page):
-    pass
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number==1
+
 
 class Play(Page):
     pass
 
-class ResultsWaitPage(WaitPage):
-    pass
-
 
 class Results(Page):
-    pass
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number==C.NUM_ROUNDS
+
 
 
 page_sequence = [Intro, Play, Results]
