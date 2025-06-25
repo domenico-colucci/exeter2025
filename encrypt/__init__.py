@@ -20,6 +20,10 @@ class Subsession(BaseSubsession):
         self.pay_per_word=Currency(0.10)
         self.word="AB"
 
+    @property
+    def lookup_dict(self):
+        return {'A':1, 'B':2}
+
 
 
 class Group(BaseGroup):
@@ -27,7 +31,19 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    pass
+    response_1 = models.IntegerField()
+    response_2 = models.IntegerField()
+    is_correct=models.BooleanField()
+    def check_response(self):
+        self.is_correct=(
+            self.response_1==self.subsession.lookup_dict[self.subsession.word[0]]
+            and
+            self.response_2==self.subsession.lookup_dict[self.subsession.word[1]]
+        )
+        if self.is_correct:
+            self.payoff = self.subsession.pay_per_word
+            
+
 
 def creating_session(subsession: Subsession):
     # This function is called at the start of each session.
@@ -45,7 +61,12 @@ class Intro(Page):
 
 
 class Play(Page):
-    pass
+    form_model='player'
+    form_fields=['response_1','response_2']
+    #staticmethod
+    def before_next_page(player, timeout_happened):
+        player.check_response()
+        
 
 
 class Results(Page):
