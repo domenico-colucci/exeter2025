@@ -1,5 +1,6 @@
 from otree.api import *
 from random import *
+import string
 
 doc = """
 Encryption game where players must decrypt messages.
@@ -15,14 +16,20 @@ class C(BaseConstants):
 class Subsession(BaseSubsession):
     pay_per_word = models.CurrencyField()
     word = models.StringField()
+    lookup_table = models.StringField()
 
     def setup_round(self):
         self.pay_per_word=Currency(0.10)
+        self.lookup_table= string.ascii_uppercase
         self.word="AB"
 
     @property
     def lookup_dict(self):
-        return {'A':1, 'B':2}
+        out ={}
+        for letter in string.ascii_uppercase:
+            out[letter]= self.lookup_table.index(letter)
+        
+        return out
 
 
 
@@ -34,12 +41,19 @@ class Player(BasePlayer):
     response_1 = models.IntegerField()
     response_2 = models.IntegerField()
     is_correct=models.BooleanField()
+    lookup_table = models.StringField()
+
     def check_response(self):
-        self.is_correct=(
-            self.response_1==self.subsession.lookup_dict[self.subsession.word[0]]
-            and
-            self.response_2==self.subsession.lookup_dict[self.subsession.word[1]]
-        )
+
+        answer=[f'response_{i}' for i in range(1, len(self.subsession.word)+1)]
+        # Check if the responses match the lookup dictionary for the word
+        correct = [self.subsession.lookup_dict[self.subsession.word[i]] for i in range(len(self.subsession.word))]
+        self.is_correct = answer==correct
+        # self.is_correct=(
+        #     self.response_1==self.subsession.lookup_dict[self.subsession.word[0]]
+        #     and
+        #     self.response_2==self.subsession.lookup_dict[self.subsession.word[1]]
+        # )
         if self.is_correct:
             self.payoff = self.subsession.pay_per_word
             
