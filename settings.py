@@ -58,7 +58,18 @@ SESSION_CONFIGS = [
             "summary"
         ],
         num_demo_participants=1,        
-    ) 
+    ),
+    dict(
+        name="full_exp",
+        app_sequence=[
+            "contest",
+            "encrypt",
+            "summary"
+        ],
+        csf='share',
+        contest_endowment=9,
+        num_demo_participants=2,
+    ), 
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs

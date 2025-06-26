@@ -115,6 +115,11 @@ class Player(BasePlayer):
     
     def in_paid_rounds(self):
         return [rd for rd in self.in_all_rounds() if rd.subsession.is_paid]
+    
+    @property
+    def total_payoff(self):
+        """Returns the total payoff across all paid rounds."""
+        return sum(rd.payoff for rd in self.in_paid_rounds())
 
 # def creating_session(subsession):
 #     subsession.setup_round()
@@ -165,6 +170,15 @@ class EndBlock(Page):
     @staticmethod
     def is_displayed(player):
         return player.round_number==C.NUM_ROUNDS
+    
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.vars['earnings_contest'] = player.total_payoff
+        player.participant.vars['contest_csf'] = player.subsession.csf
+        player.participant.vars['contest_endowment'] = player.endowment
+        player.participant.vars['contest_cost_per_ticket'] = player.cost_per_ticket
+        player.participant.vars['contest_tickets_purchased'] = player.tickets_purchased
+        player.participant.vars['contest_prize_won'] = player.prize_won
 
 
 page_sequence = [SetupRound,
