@@ -3,9 +3,36 @@
 {{ endblock }}
 
 {{ block content }}
-Earnings from part 1: {{ player.earnings_contest }}<br>
-Earnings from part 2: {{ player.earnings_encrypt }}<br>
+
    
+
+<table class="table">
+    <thead>
+        <tr class="table-primary">    
+            <th>Component</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+        <tbody>
+        <tr>
+            <th>Earnings from part 1</th>
+            <th>Earnings from part 2</th>
+        <tr>
+            <td class="text-left">{{ player.earnings_contest }}</td>
+            <td class="text-left">{{ player.earnings_encrypt }}</td>
+        </tr>
+        <tr class="table-success">
+            <th>Your show-up fee</th>
+            <th>{{ session.config.participation_fee }}</th>
+        <tr class="table-success">
+            <th>Total earnings</th>
+            <th> {{participant.payoff_plus_participation_fee}} </th>    
+        </tr>
+    </tbody>
+</table>
+
+
+
 {{ endblock }}
 
 
