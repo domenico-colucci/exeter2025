@@ -1,10 +1,87 @@
 {{ block title }}
-Play time{{ endblock }}
+<p class="text-center fw-bold">Play time</p> 
+{{ endblock }}
 {{ block content }}
-The table is {{subsession.lookup_dict}}
-<p>The word is {{subsession.word}}</p>
 
-    {{ formfields }}
-    {{ next_button }}
+{{block styles}}
+
+<style>
+    .word {
+        font-size: 2.5rem;
+        color:tomato;
+        font-weight: bold;
+        margin-top: 20px;
+        font-family: "Comic Sans MS";
+    }
+    .otree-timer {
+        display: none;
+
+    }
+    .timer-block {
+        display: flex;
+        justify-content: center;
+        background: #ccc;
+    }
+</style>
+
+{{endblock}}
+
+
+
+{{block scripts}}
+{{endblock}}
+
+{{block scripts}}
+
+{{endblock}}
+<div class="row justify-content-center timer-block">
+    <div class="col text-center p-2">
+        You have &#9203; <span class="fw-bold otree-timer__time-left">  </span> seconds to complete this task.
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr class="text-center fw-bold">
+            {{ for letter in subsession.lookup_dict.keys }}
+            <td>{{ letter }}</td>
+            {{ endfor }}
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="text-center">
+            {{ for value in subsession.lookup_dict.values }}
+            <td>{{ value }}</td>
+            {{ endfor }}
+        </tr>
+    </tbody>
+</table>
+
+
+<div class = "row">
+    <div class="col-12 text-center word">   
+    {{ subsession.word }}
+    </div>
+</div>
+
+
+
+<div class="row justify-content-center">
+    
+{{for field in player.form_fields}}
+
+<div class="col-2">
+    <input type="number" class="form-control" inputmode="numeric" id="id_{{field}}" min="0" name="{{field}}" required="" value="">
+</div>
+
+{{ endfor }}
+</div>
+
+<div class="row justify-content-center p-3">
+    <div class="col-4">
+    <button class="otree-btn-next btn btn-primary w-100">Confirm coding</button>
+    </div>
+</div>
+
 
 {{ endblock }}

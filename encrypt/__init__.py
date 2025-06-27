@@ -17,7 +17,7 @@ class C(BaseConstants):
         "ZYXWVUTSRQPONMLKJIHGFEDCBA",
         "ZBCDEFGHIJKLMNOPQRSTUVWXYA",
     ]
-    time_for_TASK= 40  # seconds
+    time_for_TASK= 900  # seconds
 
 class Subsession(BaseSubsession):
     pay_per_word = models.CurrencyField()
