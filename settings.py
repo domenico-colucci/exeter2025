@@ -70,6 +70,15 @@ SESSION_CONFIGS = [
         contest_endowment=9,
         num_demo_participants=2,
     ), 
+    dict(
+        name="confidence_quiz",
+        app_sequence=[
+            "confidence_quiz"
+        ],
+        num_demo_participants=1,
+        exam_name="Computational Economics",
+        exam_date="July 11, 2025",
+    ),
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs

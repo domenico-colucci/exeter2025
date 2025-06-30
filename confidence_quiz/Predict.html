@@ -1,0 +1,98 @@
+{{ block title }}
+    <div class="row justify-content-center">
+        Your expectations
+    </div>   
+
+{{ endblock }}
+
+{{ block styles }}
+<style>
+.controls {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 0,5em;
+    font-size: 0.9rem; /* slightly smaller */
+}
+
+.controls .form-check {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+.centered-formfields label {
+    text-align: center;
+    display: block;
+    width: 100%;
+    font-size: 1rem; /* slightly larger */
+}
+
+.centered-formfields label {
+    text-align: center;
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5em;
+}
+</style>
+{{ endblock }}
+
+{{block scripts}}
+<script>
+$(document).ready(function() {
+    function checkFields() {
+        // For radio fields, check if any option is selected
+        var isReturning = $("[name='is_returning']:checked").length > 0;
+        var expMark = $("[name='exp_mark']:checked").length > 0;
+        // For matricola, check if the input is not empty
+        var matricola = $("[name='matricola']").val() !== "";
+
+        if (isReturning && expMark && matricola) {
+            $(".otree-btn-next").removeClass("btn-secondary").addClass("btn-primary").prop("disabled", false);
+        } else {
+            $(".otree-btn-next").removeClass("btn-primary").addClass("btn-secondary").prop("disabled", true);
+        }
+    }
+
+    // Listen for changes on all relevant fields
+    $(document).on('input change', "[name='is_returning'], [name='exp_mark'], [name='matricola']", checkFields);
+
+    // Initial check in case of pre-filled values
+    checkFields();
+});
+</script>
+
+{{ endblock }}
+
+{{ block content }}
+
+
+
+<div class="row justify-content-center p-4 fw-bold">
+        Please answer the following questions about your expectations regarding the exam.
+       
+</div>
+
+
+<div class="row justify-content-center p-2">
+    <div style="
+        max-width:95%; 
+        border:1px solid #007bff; 
+        border-radius:0.5rem;
+        box-shadow:0 4px 8px rgba(0,0,0,0.1);
+        padding:1rem;
+        background:#add2aa;">
+        <div class="d-flex flex-column align-items-center centered-formfields">
+            {{ formfields }}
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="row justify-content-center p-3">
+    <div class="col-4">
+        <button class="otree-btn-next btn btn-primary w-100">Confirm your selection</button>
+    </div>
+</div>
+
+{{ endblock }}

@@ -1,0 +1,51 @@
+{{ block title }}
+    <div class="row justify-content-center">
+            Introduction
+    </div>
+{{ endblock }}
+{{ block content }}
+
+
+<div class="row justify-content-center p-3">
+    <div style="
+        max-width:80%; 
+        border:1px solid #007bff; 
+        border-radius:0.5rem;
+        box-shadow:0 4px 8px rgba(0,0,0,0.1);
+        padding:1rem;
+        background:#add2aa;">
+        <div class="row justify-content-center p-4 fw-bold">
+            What is this?
+        </div>
+        <div class="row justify-content-center p-3">
+            This is a questionnaire about your expectations regarding a coming exam. 
+            The research is conducted by BEELab at Università di Firenze, and it aims at 
+            understanding how students perceive/predict their own performance in exams.
+        </div>
+        
+        <div class="row justify-content-center p-4 fw-bold">
+            What is your incentive to fill this questionnaire?
+        </div>
+        <div  class="row justify-content-center p-3">
+            You will be asked to provide a prediction of your exam mark: 
+            if your prediction is correct, you will receive favourable rounding treatment: 
+            this means that if your prediction is, e.g. 25 and your actual mark is within 25 and 25.5
+            you will receive a mark of 26. <br>Notice: in normal circumstances,
+            this rounding treatment is not applied, so you would receive a mark of 25.
+            <br>You will also be helping research.
+        </div>
+
+        <div class="row justify-content-center p-4 fw-bold">
+            This questionnaire concerns the {{ subsession.exam_date }}, {{ subsession.exam_name}} exam.        
+        </div>
+
+    </div>
+</div>
+    
+   <div class="row justify-content-center p-3">
+    <div class="col-4">
+        <button class="otree-btn-next btn btn-primary w-100">Start the questionnaire</button>
+    </div>
+</div>
+
+{{ endblock }}

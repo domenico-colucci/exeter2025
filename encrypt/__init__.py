@@ -99,7 +99,7 @@ class Player(BasePlayer):
     
     @property
     def total_payoff(self):
-        return sum(rd.payoff for rd in self.in_paid_rounds())
+        return sum(rd.payoff for rd in self.in_all_rounds())
 
 
 def creating_session(subsession: Subsession):
