@@ -5,6 +5,18 @@
 {{ endblock }}
 {{ block content }}
 
+{{block styles}}
+
+<style>
+    .exam-info {
+        font-size: 1.5rem;
+        margin-top: 10px;
+        font-family: "Monaco";
+        justify-content: center;
+    }
+</style>
+
+{{endblock}}
 
 <div class="row justify-content-center p-3">
     <div style="
@@ -14,19 +26,22 @@
         box-shadow:0 4px 8px rgba(0,0,0,0.1);
         padding:1rem;
         background:#add2aa;">
-        <div class="row justify-content-center p-4 fw-bold">
-            What is this?
-        </div>
-        <div class="row justify-content-center p-3">
+        <h4>
+            <div class="row justify-content-center">
+                What is this?
+            </div>
+        </h4>
+        <div class="row justify-content-center p-4">
             This is a questionnaire about your expectations regarding a coming exam. 
             The research is conducted by BEELab at Università di Firenze, and it aims at 
             understanding how students perceive/predict their own performance in exams.
         </div>
-        
-        <div class="row justify-content-center p-4 fw-bold">
-            What is your incentive to fill this questionnaire?
-        </div>
-        <div  class="row justify-content-center p-3">
+        <h4>    
+            <div class="row justify-content-center">
+                What is your incentive to fill this questionnaire?
+            </div>
+        </h4>
+        <div  class="row justify-content-center p-4">
             You will be asked to provide a prediction of your exam mark: 
             if your prediction is correct, you will receive favourable rounding treatment: 
             this means that if your prediction is, e.g. 25 and your actual mark is within 25 and 25.5
@@ -34,12 +49,17 @@
             this rounding treatment is not applied, so you would receive a mark of 25.
             <br>You will also be helping research.
         </div>
+        <h4>    
+            <div class="row justify-content-center">
+                This questionnaire concerns the following exam:        
+            </div>
+        </h4> 
 
-        <div class="row justify-content-center p-4 fw-bold">
-            This questionnaire concerns the {{ subsession.exam_date }}, {{ subsession.exam_name}} exam.        
+        <div class = "row">
+            <div class="col-12 text-center exam-info">   
+                {{ subsession.exam_name }} on {{ subsession.exam_date }}
+            </div>
         </div>
-
-    </div>
 </div>
     
    <div class="row justify-content-center p-3">

@@ -75,7 +75,7 @@ SESSION_CONFIGS = [
         app_sequence=[
             "confidence_quiz"
         ],
-        num_demo_participants=1,
+        num_demo_participants=2,
         exam_name="Computational Economics",
         exam_date="July 11, 2025",
     ),

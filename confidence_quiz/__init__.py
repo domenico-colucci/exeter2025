@@ -8,7 +8,7 @@ Measuring students' expectations about their exam performance.
 
 class C(BaseConstants):
     NAME_IN_URL = 'expectations_survey'
-    PLAYERS_PER_GROUP = None
+    PLAYERS_PER_GROUP = 1
     NUM_ROUNDS = 1
 
 
@@ -19,6 +19,13 @@ class Subsession(BaseSubsession):
     def setup_quiz(self):
         self.exam_name = self.session.config.get('exam_name', 'Computational Economics')
         self.exam_date = self.session.config.get('exam_date', '2025-01-01')
+    @staticmethod
+    def creating_session(subsession):
+        # Imposta il raggruppamento per arrivo,
+        # così ogni giocatore viene accoppiato in un gruppo individuale
+        subsession.group_by_arrival_time_method = lambda waiting_players: [waiting_players[0]]
+        #subsession.group_by_arrival_time = True
+        subsession.setup_quiz()
 
 
 class Group(BaseGroup):
@@ -89,4 +96,5 @@ class Thanks(Page):
     pass
 
 
-page_sequence = [Setup_Quiz, Intro, Predict, Thanks]
+page_sequence = [Setup_Quiz,
+     Intro, Predict, Thanks]
